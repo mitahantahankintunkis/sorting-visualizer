@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Sorting algorithm visualizer</title>
+        <link rel="stylesheet" href="styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" charset="utf-8"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+
+        <script type="module" charset="utf-8" src="main.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul id="navigation-list">
+                    <li>Sorting algorithm visualizer</li>
+                    <div class="horizontal">
+                        <li><a href="#">Visualizer</a></li>
+                        <li><a href="#">About</a></li>
+                    </div>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="container">
+            <div class="chart"></div>
+            <div class="options">
+                <div class="vertical">
+                    <select id="sAlgorithm" name="Algorithm">
+                        <option value="quicksort">Quicksort</option>
+                        <option value="mergesort">Merge sort</option>
+                        <option value="selectionsort">Selection sort</option>
+                        <option value="insertionsort">Insertion sort</option>
+                        <option value="countingsort">Counting sort</option>
+                        <option value="radixsort">Radix sort</option>
+                    </select>
+                    <select name="Visualization type">
+                        <option value="bars">Bars</option>
+                        <option value="dots">Dots</option>
+                        <option value="color">Color</option>
+                    </select>
+                    <label for="elements">Elements</label>
+                    <input type="range" name="elements" id="nElements" min="10" max="1000" value="100">
+
+                    <label for="steps">Step size</label>
+                    <input type="range" name="steps" id="steps" min="1" max="10" value="1">
+                </div>
+
+                <button id="bSort">Shuffle&amp;sort</button>
+            </div>
+        </div>
+    </body>
+</html>
