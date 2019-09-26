@@ -7,7 +7,7 @@ let yScale = d3.scaleLinear()
     .domain([0, 1])
     .range([0, 1]);
 
-export function render(cont, { data, width, height }) {
+export function render(cont, { data, width, height, type }) {
     if (xScale.domain()[1].length != data.length) {
         xScale = d3.scaleBand()
             .domain(data)
@@ -19,16 +19,34 @@ export function render(cont, { data, width, height }) {
             .range([0, height]);
     }
 
-    const rects = cont.selectAll("rect").data(data, d => d);
+    let selection;
+    switch (type) {
+        case "dots":
+            cont.selectAll("rect").remove();
 
-    rects.enter().append("rect")
-         .style("fill", "#de8d4f")
-        .merge(rects)
-         .attr("width", xScale.bandwidth())
-         .attr("height", (d, i) => yScale(d))
+            selection = cont.selectAll("circle").data(data, d => d);
+            selection.enter().append("circle")
+                        .style("fill", "#de8d4f")
+                     .merge(selection)
+                        .attr("r", xScale.bandwidth() > 2 ? xScale.bandwidth() : 2)
+                        .attr("cx", (d, i) => xScale(d))
+                        .attr("cy", (d, i) => height - yScale(d));
+            break;
+
+        default:
+            cont.selectAll("circle").remove();
+
+            selection = cont.selectAll("rect").data(data, d => d);
+            selection.enter().append("rect")
+                        .style("fill", "#de8d4f")
+                     .merge(selection)
+                        .attr("width", xScale.bandwidth())
+                        .attr("height", (d, i) => yScale(d))
+            //.transition().duration(1000)
+                        .attr("x", (d, i) => xScale(d))
+                        .attr("y", (d, i) => height - yScale(d));
+    }
+
+    selection.exit().remove();
     //.transition().duration()
-         .attr("x", (d, i) => xScale(d))
-         .attr("y", (d, i) => height - yScale(d));
-
-    rects.exit().remove();
 }

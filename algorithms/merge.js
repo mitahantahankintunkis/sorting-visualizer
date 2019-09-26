@@ -14,9 +14,15 @@ function partition(a, b) {
     return i - 1;
 }
 
+//function merge(a, b, n, m) {
+//    const mn = n < m ? n : m;
+//    for (let i = a)
+//}
+
 
 function quicksort(a, b) {
     if (a >= b) return;
+    console.log(a, b);
     const m = partition(a, b);
     quicksort(a, m - 1);
     quicksort(m + 1, b);
@@ -29,6 +35,7 @@ export function sortStep(data, frame) {
         dataCopy = data.slice();
         quicksort(0, data.length - 1);
         swaps = swaps.reverse();
+        console.log(dataCopy.slice(data.length - 10));
     }
 
     let [i, j] = swaps.pop();
