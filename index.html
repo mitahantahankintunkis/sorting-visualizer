@@ -17,10 +17,12 @@
             <nav>
                 <ul id="navigation-list">
                     <li>Sorting algorithm visualizer</li>
+                    <!--
                     <div class="horizontal">
                         <li><a href="#">Visualizer</a></li>
                         <li><a href="#">About</a></li>
                     </div>
+                    -->
                 </ul>
             </nav>
         </header>
@@ -29,19 +31,24 @@
             <div class="chart"></div>
             <div class="options">
                 <div class="vertical">
-                    <select id="sAlgorithm" name="Algorithm">
+                    <label for="algorithm">Algorithm</label>
+                    <select id="sAlgorithm" name="algorithm">
                         <option value="quicksort">Quicksort</option>
-                        <option value="mergesort">Merge sort</option>
                         <option value="selectionsort">Selection sort</option>
                         <option value="insertionsort">Insertion sort</option>
-                        <option value="countingsort">Counting sort</option>
                         <option value="radixsort">Radix sort</option>
+                        <!--
+                        <option value="countingsort">Counting sort</option>
+                        <option value="mergesort">Merge sort</option>
+                        -->
                     </select>
-                    <select id="sType" name="Visualization type">
+
+                    <label for="type">Visualization type</label>
+                    <select id="sType" name="type">
                         <option value="bars">Bars</option>
                         <option value="dots">Dots</option>
-                        <option value="color">Color</option>
                     </select>
+
                     <label for="elements">Elements</label>
                     <input type="range" name="elements" id="nElements" min="10" max="1000" value="100">
 

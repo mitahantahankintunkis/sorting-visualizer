@@ -4,7 +4,7 @@ let dataCopy = new Array();
 function partition(a, b) {
     let i = a;
     for (let j = a; j <= b; ++j) {
-        if (dataCopy[j] <= dataCopy[b]) {
+        if (dataCopy[j][0] <= dataCopy[b][0]) {
             swaps.push([i, j]);
             [dataCopy[i], dataCopy[j]] = [dataCopy[j], dataCopy[i]];
             i += 1
@@ -23,7 +23,7 @@ function quicksort(a, b) {
 }
 
 
-export function sortStep(data, frame) {
+export function sortStep(data, { frame, colorRange }) {
     if (frame == 0) {
         swaps = new Array();
         dataCopy = data.slice();
@@ -31,8 +31,12 @@ export function sortStep(data, frame) {
         swaps = swaps.reverse();
     }
 
+    if (swaps.length == 0) return true;
+
     let [i, j] = swaps.pop();
     [data[i], data[j]] = [data[j], data[i]];
+    data[i][1] = colorRange;
+    data[j][1] = colorRange;
 
-    return swaps.length == 0;
+    return false;
 }

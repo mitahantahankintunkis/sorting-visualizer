@@ -2,7 +2,7 @@ import { render } from './chart.js';
 import * as SelectionSort from './algorithms/selection.js';
 import * as InsertionSort from './algorithms/insertion.js';
 import * as Quicksort from './algorithms/quick.js';
-import * as Mergesort from './algorithms/merge.js';
+import * as RadixSort from './algorithms/radix.js';
 
 const width = 600;
 const height = 600;
@@ -13,28 +13,42 @@ svg.attr("width", "100%")
    .attr("viewBox", `0 0 ${width} ${height}`);
 
 let data = new Array(100);
-for (let i = 0; i < data.length; ++i) data[i] = i + 1;
+let colorRange = data.length / 4;
+let stepSize = 1;
+let handle = null;
+let frameIndex = 0;
+
+for (let i = 0; i < data.length; ++i) data[i] = [i + 1, 0];
 
 const props = {
     data: data,
     height: height,
     width: width,
-    type: "bar"
-}
-
-let stepSize = 1;
-let handle = null;
-let frameIndex = 0;
+    type: "bar",
+    colorRange: colorRange
+};
 
 let sortFunctions = {
     "selectionsort": SelectionSort.sortStep,
     "insertionsort": InsertionSort.sortStep,
     "quicksort":     Quicksort.sortStep,
+    "radixsort":     RadixSort.sortStep,
 };
 
 // Shuffle
 function sort() {
+    let sorted = false;
+    let finished = false;
+
     for (let step = 0; step < stepSize; ++step) {
+        finished = true;
+        for (let d of data) {
+            if (d[1] > 0) {
+                --d[1];
+                finished = false;
+            }
+        }
+
         const key = $("#sAlgorithm")[0].value;
 
         if (!sortFunctions.hasOwnProperty(key)) {
@@ -42,8 +56,10 @@ function sort() {
             return;
         }
 
-        const sorted = sortFunctions[key](data, frameIndex);
-        if (sorted) {
+        if (!sorted) {
+            sorted = sortFunctions[key](data, { frame: frameIndex, colorRange: colorRange });
+        }
+        if (sorted && finished) {
             render(svg, props);
             return;
         }
@@ -64,14 +80,8 @@ function shuffleAndSort() {
             return;
         }
 
-        let temp = data[frameIndex];
         let j = Math.floor(Math.random() * data.length);
-
-        if (!data[frameIndex] || !data[j]) console.log(j, data.length);
-
-        data[frameIndex] = data[j];
-        data[j] = temp;
-
+        [data[frameIndex], data[j]] = [data[j], data[frameIndex]];
         ++frameIndex;
     }
 
@@ -85,10 +95,12 @@ function stopAnimation() {
 }
 
 function updateData(n) {
-    data = data.filter((d) => d <= n).slice(0, n);
-    for (let i = data.length; i < n; ++i) data.push(i + 1);
+    data = data.filter((d) => d[0] <= n).slice(0, n);
+    for (let i = data.length; i < n; ++i) data.push([i + 1, 0]);
+    colorRange = data.length / 4;
 
     props.data = data;
+    props.colorRange = colorRange;
     render(svg, props);
 }
 
