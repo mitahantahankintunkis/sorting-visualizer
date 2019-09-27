@@ -9,11 +9,8 @@ let yScale = d3.scaleLinear()
 
 let colorScale = d3.scaleSequential()
     .domain([0, 10])
-    .interpolator(d3.interpolatePlasma);
-//.interpolator(d3.interpolateWarm);
-//.interpolator(d3.interpolateViridis);
-//.interpolator(d3.interpolateMagma);
-//.interpolator(d3.interpolateInferno);
+    .interpolator(d3.interpolateOrRd);
+//.interpolator(d3.interpolateReds);
 
 export function render(cont, { data, width, height, type, colorRange }) {
     if (xScale.domain()[1].length != data.length) {
